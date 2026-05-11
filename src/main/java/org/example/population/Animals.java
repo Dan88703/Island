@@ -1,7 +1,9 @@
 package org.example.population;
 
-public abstract class Animals implements LifeCycle{
+import java.util.UUID;
 
+public abstract class Animals implements LifeCycle{
+    protected final String id = UUID.randomUUID().toString();
     protected String symbol;
     protected int maxPerCell;
     protected int speed;
@@ -26,7 +28,7 @@ public abstract class Animals implements LifeCycle{
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
-
+    public String getId() { return id; }
     public int getMaxPerCell() {
         return maxPerCell;
     }
