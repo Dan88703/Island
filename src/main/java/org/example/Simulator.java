@@ -73,6 +73,14 @@ public class Simulator {
                             });
                 }
             }
+            for(Cage[] row : island.getGrid()) {
+                for (Cage cage : row) {
+                    new ArrayList<>(cage.getAnimals())
+                            .forEach(animal -> {
+                                animal.multiply(cage);
+                            });
+                }
+            }
             try {
                 Thread.sleep(1000);
             }catch (InterruptedException e){

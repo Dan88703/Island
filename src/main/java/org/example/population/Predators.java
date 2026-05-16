@@ -19,7 +19,7 @@ public abstract class Predators extends Animals{
                 .filter(a -> a instanceof Rabbit).toList();
 
         if(!rabbits.isEmpty() && new Random().nextInt(100) < 25){
-            Animals eatRabbit =  rabbits.get(new Random().nextInt(rabbits.size()));
+            Animals eatRabbit = rabbits.get(new Random().nextInt(rabbits.size()));
             eatRabbit.setAlive(false);
             cage.removeAnimal(eatRabbit);
         }
@@ -46,6 +46,12 @@ public abstract class Predators extends Animals{
 
     @Override
     public void multiply(Cage cage) {
+        List<Animals> wolfs = cage.getAnimals().stream()
+                .filter(a -> a instanceof Wolf)
+                .toList();
 
+        if(!wolfs.isEmpty() && new Random().nextInt(100) < 50 && wolfs.size() < this.maxPerCell){
+            cage.addAnimal(new Wolf());
+        }
     }
 }

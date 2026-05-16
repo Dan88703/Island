@@ -3,6 +3,7 @@ package org.example.population;
 import org.example.Cage;
 import org.example.Island;
 
+import java.util.List;
 import java.util.Random;
 
 public abstract class Herbivores extends Animals{
@@ -38,6 +39,12 @@ public abstract class Herbivores extends Animals{
 
     @Override
     public void multiply(Cage cage) {
+        List<Animals> rabbits = cage.getAnimals().stream()
+                .filter(a -> a instanceof Rabbit)
+                .toList();
 
+        if(!rabbits.isEmpty() && new Random().nextInt(100) < 50 && rabbits.size() < this.maxPerCell){
+            cage.addAnimal(new Rabbit());
+        }
     }
 }
