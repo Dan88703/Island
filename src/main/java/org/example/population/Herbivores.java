@@ -9,8 +9,8 @@ import java.util.Random;
 public abstract class Herbivores extends Animals{
 
 
-    public Herbivores(String symbol, int maxPerCell, int speed, double satiety, double foodNeeded, int maxHunger) {
-        super(symbol, maxPerCell, speed, satiety, foodNeeded, maxHunger);
+    public Herbivores(String symbol,int maxPerCell, int speed) {
+        super(symbol,maxPerCell, speed);
     }
 
     @Override

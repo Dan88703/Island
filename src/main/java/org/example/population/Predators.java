@@ -8,8 +8,8 @@ import java.util.Random;
 
 public abstract class Predators extends Animals{
 
-    public Predators(String symbol, int maxPerCell, int speed, double satiety, double foodNeeded, int maxHunger) {
-        super(symbol, maxPerCell, speed, satiety, foodNeeded, maxHunger);
+    public Predators(String symbol, int maxPerCell, int speed) {
+        super(symbol, maxPerCell, speed);
     }
 
     @Override

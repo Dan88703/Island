@@ -31,10 +31,10 @@ public class Simulator {
                     int rabbit = rnd.nextInt(15) + 1;
 
                     for (int i = 0; i < wolf; i++) {
-                        cage.addAnimal(new Wolf());
+                        cage.addAnimal(AnimalFactory.createAnimal("WOLF"));
                     }
                     for (int i = 0; i < rabbit; i++) {
-                        cage.addAnimal(new Rabbit());
+                        cage.addAnimal(AnimalFactory.createAnimal("RABBIT"));
                     }
                     cage.setPlant(new Plants(10.0));
                 }));
