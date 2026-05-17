@@ -1,7 +1,13 @@
 package org.example.population;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.UUID;
 
+
+@Setter
+@Getter
 public abstract class Animals implements LifeCycle{
     protected final String id = UUID.randomUUID().toString();
     protected String symbol;
@@ -21,59 +27,6 @@ public abstract class Animals implements LifeCycle{
         this.maxHunger = maxHunger;
     }
 
-    public String getSymbol() {
-        return symbol;
-    }
 
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-    public String getId() { return id; }
-    public int getMaxPerCell() {
-        return maxPerCell;
-    }
 
-    public void setMaxPerCell(int maxPerCell) {
-        this.maxPerCell = maxPerCell;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public double getFoodNeeded() {
-        return foodNeeded;
-    }
-
-    public void setFoodNeeded(double foodNeeded) {
-        this.foodNeeded = foodNeeded;
-    }
-
-    public int getMaxHunger() {
-        return maxHunger;
-    }
-
-    public void setMaxHunger(int maxHunger) {
-        this.maxHunger = maxHunger;
-    }
-
-    public double getSatiety() {
-        return satiety;
-    }
-
-    public void setSatiety(double satiety) {
-        this.satiety = satiety;
-    }
-
-    public boolean isAlive() {
-        return alive;
-    }
-
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
 }
