@@ -2,7 +2,7 @@ package org.example.population;
 
 import org.example.Cage;
 import org.example.Island;
-
+import org.example.population.AllAnimals.Rabbit;
 import java.util.List;
 import java.util.Random;
 

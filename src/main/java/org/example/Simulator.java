@@ -1,14 +1,12 @@
 package org.example;
 
-import org.example.population.Animals;
 import org.example.population.Plants;
-import org.example.population.Rabbit;
-import org.example.population.Wolf;
+import org.example.population.AllAnimals.Wolf;
+import org.example.population.AllAnimals.Rabbit;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Timer;
 import java.util.concurrent.*;
 
 public class Simulator {
@@ -29,14 +27,17 @@ public class Simulator {
                     Random rnd = new Random();
                     int wolf = rnd.nextInt(15) + 1;
                     int rabbit = rnd.nextInt(15) + 1;
-
+                    int plants = rnd.nextInt(15) + 1;
                     for (int i = 0; i < wolf; i++) {
                         cage.addAnimal(AnimalFactory.createAnimal("WOLF"));
                     }
                     for (int i = 0; i < rabbit; i++) {
                         cage.addAnimal(AnimalFactory.createAnimal("RABBIT"));
                     }
-                    cage.setPlant(new Plants(10.0));
+                    for (int i = 0; i < plants; i++) {
+                        cage.setPlant(new Plants(10.0));
+                    }
+
                 }));
             }
         }

@@ -1,10 +1,16 @@
 package org.example;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.example.population.Animals;
 import org.example.population.Plants;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+
+@Getter
+@Setter
 
 public class Cage {
 
@@ -17,13 +23,7 @@ public class Cage {
         this.y = y;
     }
 
-    public int getY() {
-        return y;
-    }
 
-    public int getX() {
-        return x;
-    }
 
     public void addAnimal(Animals a){
         animals.add(a);
@@ -33,17 +33,7 @@ public class Cage {
         animals.remove(a);
     };
 
-    public List<Animals> getAnimals(){
-        return animals;
-    };
 
-    public Plants getPlant(){
-        return plant;
-    };
-
-    public void setPlant(Plants p){
-        this.plant = p;
-    };
 
     public long countOf(Class<?> type){
         return animals.stream().filter(a -> a.getClass() == type).count();
