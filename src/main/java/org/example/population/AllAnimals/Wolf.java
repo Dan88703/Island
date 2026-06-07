@@ -1,9 +1,9 @@
 package org.example.population.AllAnimals;
 
-import org.example.population.Predators;
+import org.example.population.Animals;
 
-public class Wolf extends Predators {
+public class Wolf extends Animals {
     public Wolf() {
-        super("Wolf", 15, 3, 8.0, 8.0, 10);
+        super("Wolf", 25,  'P' , 3);
     }
 }

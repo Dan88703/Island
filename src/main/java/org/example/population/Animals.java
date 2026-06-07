@@ -8,19 +8,20 @@ import java.util.UUID;
 
 @Setter
 @Getter
-public abstract class Animals implements LifeCycle{
+public abstract class Animals {
     protected final String id = UUID.randomUUID().toString();
-    protected int maxPerCell;
+    protected char rations;
+    protected int foodLimit;
     protected String symbol;
     protected int speed;
     protected boolean alive = true;
 
-    public Animals(String symbol,  int maxPerCell, int speed) {
-        this.maxPerCell = maxPerCell;
+    public Animals(String symbol, int foodLimit, char rations ,int speed) {
+        this.foodLimit = foodLimit;
+        this.rations = rations;
         this.speed = speed;
         this.symbol = symbol;
     }
-
 
 
 }

@@ -1,5 +1,11 @@
 package org.example.population;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+
 public class Plants {
     public Plants(double amount) {
         this.amount = amount;
@@ -7,12 +13,10 @@ public class Plants {
 
     private double amount;
 
-    public double getAmount() {
-        return amount;
-    }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+
+    public void grow(int amount) {
+        this.amount += amount;
     }
 
     public void consume(double eaten) {

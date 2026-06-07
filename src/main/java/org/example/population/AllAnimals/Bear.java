@@ -1,9 +1,10 @@
 package org.example.population.AllAnimals;
 
-import org.example.population.Predators;
 
-public class Bear extends Predators{
-    public Bear(){
-        super("Bear", 15, 1);
+import org.example.population.Animals;
+
+public class Bear extends Animals {
+    public Bear() {
+        super("Bear", 40, 'P' , 1);
     }
 }

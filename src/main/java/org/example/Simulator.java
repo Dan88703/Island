@@ -1,53 +1,33 @@
 package org.example;
 
-import org.example.population.Plants;
+import org.example.islandManager.IslandInit;
 import org.example.population.AllAnimals.Wolf;
 import org.example.population.AllAnimals.Rabbit;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.*;
 
 public class Simulator {
-    private final Island island = new Island();
+
+    private final Island island;
     private final ExecutorService executor = Executors.newFixedThreadPool(5);
 
+    public Simulator(int islandSize) {
+        this.island = new Island(islandSize);
+    }
+
     public static void main(String[] args) {
-        Simulator simulator = new Simulator();
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Write island siza: ");
+        int islandSize = sc.nextInt();
+        Simulator simulator = new Simulator(islandSize);
         simulator.init();
         simulator.run();
     }
 
     public void init() {
-        List<Future<?>> futures = new ArrayList<>();
-        for (Cage[] row : island.getGrid()) {
-            for (Cage cage : row) {
-                futures.add(executor.submit(() -> {
-                    Random rnd = new Random();
-                    int wolf = rnd.nextInt(15) + 1;
-                    int rabbit = rnd.nextInt(15) + 1;
-                    int plants = rnd.nextInt(15) + 1;
-                    for (int i = 0; i < wolf; i++) {
-                        cage.addAnimal(AnimalFactory.createAnimal("WOLF"));
-                    }
-                    for (int i = 0; i < rabbit; i++) {
-                        cage.addAnimal(AnimalFactory.createAnimal("RABBIT"));
-                    }
-                    for (int i = 0; i < plants; i++) {
-                        cage.setPlant(new Plants(10.0));
-                    }
-
-                }));
-            }
-        }
-        for (Future<?> f : futures) {
-            try {
-                f.get();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        IslandInit islandInit = new IslandInit(island, executor);
+        islandInit.init();
     }
 
     public void run() {
@@ -62,7 +42,7 @@ public class Simulator {
                 for (Cage cage : row) {
                     new ArrayList<>(cage.getAnimals())
                             .forEach(animal -> {
-                                animal.eat(cage);
+
                             });
                 }
             }
@@ -74,7 +54,7 @@ public class Simulator {
                             });
                 }
             }
-            for(Cage[] row : island.getGrid()) {
+            for (Cage[] row : island.getGrid()) {
                 for (Cage cage : row) {
                     new ArrayList<>(cage.getAnimals())
                             .forEach(animal -> {
@@ -84,7 +64,7 @@ public class Simulator {
             }
             try {
                 Thread.sleep(1000);
-            }catch (InterruptedException e){
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
