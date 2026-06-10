@@ -10,14 +10,16 @@ import java.util.List;
 @Getter
 @Setter
 public class Island {
-    private final int size;
+    private int sizeX;
+    private int sizeY;
     private List<Cage> cages;
 
-    public Island(int size) {
-        this.size = size;
+    public Island(int sizeX, int sizeY) {
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
         this.cages = new ArrayList<>();
-        for (int i = 0; i < size; i++)
-            for (int j = 0; j < size; j++)
+        for (int i = 0; i < sizeX; i++)
+            for (int j = 0; j < sizeY; j++)
                 cages.add(new Cage(new Coordinate(i, j)));
     }
 

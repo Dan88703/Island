@@ -6,10 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 class Parameters {
-    private final boolean isMultithreaded;
-    private final int x;
-    private final int y;
-    private final boolean isLoggingEnabled;
+    private boolean isMultithreaded;
+    private int x;
+    private int y;
+    private boolean isLoggingEnabled;
 
     public Parameters(boolean isMultithreaded, int x, int y, boolean isLoggingEnabled) {
         this.isMultithreaded = isMultithreaded;

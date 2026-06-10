@@ -34,8 +34,12 @@ public class EatService {
             eatAsWolf(cage);
         } else if (animal instanceof Bear) {
             eatAsBear(cage);
-        } else {
-            eatPlants(cage);
+        } else if (animal instanceof Rabbit)  { eatPlants(cage, 0.25); }
+        else if (animal instanceof WildBoar)    { eatPlants(cage, 0.50); }
+        else if (animal instanceof Mouse)   { eatPlants(cage, 0.10); }
+        else if (animal instanceof Duck)    { eatPlants(cage, 0.20); }
+        else {
+            if (animal instanceof Elk)     { eatPlants(cage, 0.90); }
         }
 
     }
@@ -43,7 +47,7 @@ public class EatService {
     private void eatAsWolf(Cage cage) {
         List<Animals> prey = cage.getAnimals()
                 .stream()
-                .filter(a -> !a.getClass().getSimpleName().equals("Bear") && !a.getClass().getSimpleName().equals("Wolf"))
+                .filter(a -> a instanceof Rabbit || a instanceof Duck)
                 .toList();
         if (!prey.isEmpty() && Math.random() < 0.5) {
             Animals victim = prey.get(new Random().nextInt(prey.size()));
@@ -54,7 +58,7 @@ public class EatService {
     private void eatAsBear(Cage cage) {
         List<Animals> prey = cage.getAnimals()
                 .stream()
-                .filter(a -> a.getClass().getSimpleName().equals("Bear"))
+                .filter(a -> !(a instanceof Bear))
                 .toList();
         if (!prey.isEmpty() && Math.random() < 0.5) {
             Animals victim = prey.get(new Random().nextInt(prey.size()));
@@ -62,7 +66,7 @@ public class EatService {
         }
     }
 
-    private void eatPlants(Cage cage) {
+    private void eatPlants(Cage cage, double chance) {
         if (!cage.getPlants().isEmpty() && Math.random() < 0.50) {
             Plants plant = cage.getPlants().get(0);
             cage.getPlants().remove(plant);
