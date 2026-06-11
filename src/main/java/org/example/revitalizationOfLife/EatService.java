@@ -14,7 +14,6 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public class EatService {
     private final Island island;
-    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
     public EatService(Island island) {
         this.island = island;
@@ -29,27 +28,31 @@ public class EatService {
 
 
     public void eat(Animals animal, Cage cage) {
-
-        if (animal instanceof Wolf) {
+        if (animal.getAnimalsType() == AnimalsType.WOLF) {
             eatAsWolf(cage);
-        } else if (animal instanceof Bear) {
+        } else if (animal.getAnimalsType() == AnimalsType.BEAR) {
             eatAsBear(cage);
-        } else if (animal instanceof Rabbit)  { eatPlants(cage, 0.25); }
-        else if (animal instanceof WildBoar)    { eatPlants(cage, 0.50); }
-        else if (animal instanceof Mouse)   { eatPlants(cage, 0.10); }
-        else if (animal instanceof Duck)    { eatPlants(cage, 0.20); }
-        else {
-            if (animal instanceof Elk)     { eatPlants(cage, 0.90); }
+        } else if (animal.getAnimalsType() == AnimalsType.RABBIT) {
+            eatPlants(cage, 0.25);
+        } else if (animal.getAnimalsType() == AnimalsType.BOAR) {
+            eatPlants(cage, 0.50);
+        } else if (animal.getAnimalsType() == AnimalsType.MOUSE) {
+            eatPlants(cage, 0.10);
+        } else if (animal.getAnimalsType() == AnimalsType.DUCK) {
+            eatPlants(cage, 0.20);
+        } else if (animal.getAnimalsType() == AnimalsType.ELK) {
+            eatPlants(cage, 0.90);
         }
-
     }
 
     private void eatAsWolf(Cage cage) {
         List<Animals> prey = cage.getAnimals()
                 .stream()
-                .filter(a -> a instanceof Rabbit || a instanceof Duck)
+                .filter(a -> a.getAnimalsType() == AnimalsType.RABBIT
+                        || a.getAnimalsType() == AnimalsType.DUCK)
                 .toList();
-        if (!prey.isEmpty() && Math.random() < 0.5) {
+        if (!prey.isEmpty() && Math.random() < 0.25
+        ) {
             Animals victim = prey.get(new Random().nextInt(prey.size()));
             cage.getAnimals().remove(victim);
         }
@@ -58,16 +61,16 @@ public class EatService {
     private void eatAsBear(Cage cage) {
         List<Animals> prey = cage.getAnimals()
                 .stream()
-                .filter(a -> !(a instanceof Bear))
+                .filter(a -> a.getAnimalsType() != AnimalsType.BEAR)
                 .toList();
-        if (!prey.isEmpty() && Math.random() < 0.5) {
+        if (!prey.isEmpty() && Math.random() < 0.7) {
             Animals victim = prey.get(new Random().nextInt(prey.size()));
             cage.getAnimals().remove(victim);
         }
     }
 
     private void eatPlants(Cage cage, double chance) {
-        if (!cage.getPlants().isEmpty() && Math.random() < 0.50) {
+        if (!cage.getPlants().isEmpty() && Math.random() < chance) {
             Plants plant = cage.getPlants().get(0);
             cage.getPlants().remove(plant);
         }

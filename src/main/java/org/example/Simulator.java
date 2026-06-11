@@ -1,12 +1,14 @@
 package org.example;
 
 import org.example.islandManager.IslandInit;
-import org.example.population.AllAnimals.Wolf;
-import org.example.population.AllAnimals.Rabbit;
+import org.example.population.AllAnimals.*;
+import org.example.revitalizationOfLife.EatService;
+import org.example.revitalizationOfLife.GrowService;
+import org.example.revitalizationOfLife.MoveService;
 
-import javax.security.auth.login.Configuration;
-import java.lang.reflect.Parameter;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
@@ -21,15 +23,21 @@ public class Simulator {
 
     public static void main(String[] args) {
         try (Scanner sc = new Scanner(System.in)) {
-            System.out.print("Write island siza: ");
+            System.out.print("Write island width: ");
             int x = sc.nextInt();
+            System.out.print("Write island height: ");
             int y = sc.nextInt();
-            boolean isInThread = sc.nextBoolean();
+            System.out.print("What kind of way do you want to do? : 1 Thread or Many Threads");
+            String isInThread = sc.next();
             try {
                 if ((x >= 5 && x <= 50) && (y >= 5 && y <= 50)) {
                     Simulator simulator = new Simulator(x, y);
                     simulator.init();
-                    simulator.run();
+                    if (isInThread.equals("many")) {
+                        simulator.runMultiThread();
+                    } else {
+                        simulator.runSingleThread();
+                    }
                 } else {
                     throw new IllegalArgumentException("Invalid island size");
                 }
@@ -37,6 +45,7 @@ public class Simulator {
                 System.err.println("This island can't exist");
                 e.printStackTrace();
             }
+
         }
     }
 
@@ -52,54 +61,71 @@ public class Simulator {
             statistics();
         }, 0, 15, TimeUnit.SECONDS);
 
-//        while (true) {
-//            for (Cage[] row : island.getGrid()) {
-//                for (Cage cage : row) {
-//                    new ArrayList<>(cage.getAnimals())
-//                            .forEach(animal -> {
-//
-//                            });
-//                }
-//            }
-//            for (Cage[] row : island.getGrid()) {
-//                for (Cage cage : row) {
-//                    new ArrayList<>(cage.getAnimals())
-//                            .forEach(animal -> {
-//                                animal.move(cage, island);
-//                            });
-//                }
-//            }
-//            for (Cage[] row : island.getGrid()) {
-//                for (Cage cage : row) {
-//                    new ArrayList<>(cage.getAnimals())
-//                            .forEach(animal -> {
-//                                animal.multiply(cage);
-//                            });
-//                }
-//            }
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
+
     }
 
     public void statistics() {
-        int wolf = 0;
-        int rabbit = 0;
-        int plants = 0;
+        System.out.println("=== Statistic ===");
+        for (AnimalsType animalsType : AnimalsType.values()) {
+           long count = island.getCages().stream()
+                   .flatMap(cage -> cage.getAnimals().stream()
+                           .filter(animals -> animals.getAnimalsType() == animalsType))
+                   .count();
+           System.out.println("Animal:" + animalsType.symbol + " " + count);
 
-//        for (Cage[] row : island.getGrid()) {
-//            for (Cage cage : row) {
-//                wolf += cage.countOf(Wolf.class);
-//                rabbit += cage.countOf(Rabbit.class);
-//                if (cage.getPlant() != null && cage.getPlant().getAmount() > 0) plants++;
-//            }
-//        }
-        System.out.println("Wolf: " + wolf);
-        System.out.println("Rabbit: " + rabbit);
-        System.out.println("Plants: " + plants);
+        }
+        long plants = island.getCages().stream()
+                .mapToLong(cage -> cage.getPlants().size())
+                .sum();
+
+        System.out.println("Plants:" + plants);
 
     }
+
+    public void runMultiThread() throws InterruptedException {
+        EatService eat = new EatService(island);
+        MoveService move = new MoveService(island);
+        GrowService grow = new GrowService(island);
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(() -> {
+            statistics();
+        }, 0, 15, TimeUnit.SECONDS);
+
+        grow.start();
+
+        while (true) {
+            List<Future<?>> futures = new ArrayList<>();
+            futures.add(executor.submit(eat::process));
+            futures.add(executor.submit(move::procces));
+
+            for (Future<?> f : futures) {
+                try {
+                    f.get();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            Thread.sleep(3000);
+        }
+    }
+
+    public void runSingleThread() throws InterruptedException {
+        EatService eat = new EatService(island);
+        MoveService move = new MoveService(island);
+        GrowService grow = new GrowService(island);
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(() -> {
+            statistics();
+        }, 0, 15, TimeUnit.SECONDS);
+
+        grow.start();
+
+        while (true) {
+            eat.process();
+            move.procces();
+            Thread.sleep(2000);
+        }
+
+    }
+
 }
