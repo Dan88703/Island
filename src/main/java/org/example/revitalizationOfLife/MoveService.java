@@ -1,6 +1,7 @@
 package org.example.revitalizationOfLife;
 
 import org.example.Cage;
+import org.example.EvanteLogger;
 import org.example.Island;
 import org.example.islandManager.Coordinate;
 import org.example.population.Animals;
@@ -10,9 +11,11 @@ import java.util.Random;
 
 public class MoveService {
     private final Island island;
+    private final EvanteLogger track;
 
-    public MoveService(Island island) {
+    public MoveService(Island island, EvanteLogger track) {
         this.island = island;
+        this.track = track;
     }
 
     public void procces() {
@@ -45,6 +48,9 @@ public class MoveService {
 
         Cage newCage = island.getCage(new Coordinate(x, y));
         if (newCage != cage) {
+            System.out.println(animal + " moved from "
+                    + cage.getCoordinate().getX() + "," + cage.getCoordinate().getY()
+                    + " to " + newCage.getCoordinate().getX() + "," + newCage.getCoordinate().getY());
             cage.removeAnimal(animal);
             newCage.addAnimal(animal);
         }

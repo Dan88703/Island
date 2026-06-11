@@ -3,7 +3,6 @@ package org.example;
 
 import org.example.population.AllAnimals.*;
 import org.example.population.Animals;
-import org.example.population.Animals.*;
 
 public class AnimalFactory {
 

@@ -13,7 +13,7 @@ import java.util.Scanner;
 import java.util.concurrent.*;
 
 public class Simulator {
-
+    private String isTrack;
     private final Island island;
     private final ExecutorService executor = Executors.newFixedThreadPool(5);
 
@@ -22,6 +22,7 @@ public class Simulator {
     }
 
     public static void main(String[] args) {
+
         try (Scanner sc = new Scanner(System.in)) {
             System.out.print("Write island width: ");
             int x = sc.nextInt();
@@ -29,9 +30,12 @@ public class Simulator {
             int y = sc.nextInt();
             System.out.print("What kind of way do you want to do? : 1 Thread or Many Threads");
             String isInThread = sc.next();
+            System.out.println("Do you want to track animals?");
+            System.out.println("Y/n");
+            Simulator simulator =  new Simulator(x,y);
+            simulator.isTrack = sc.next();
             try {
                 if ((x >= 5 && x <= 50) && (y >= 5 && y <= 50)) {
-                    Simulator simulator = new Simulator(x, y);
                     simulator.init();
                     if (isInThread.equals("many")) {
                         simulator.runMultiThread();
@@ -83,8 +87,9 @@ public class Simulator {
     }
 
     public void runMultiThread() throws InterruptedException {
+        EvanteLogger logger = new EvanteLogger(!(isTrack.equals("n")));
         EatService eat = new EatService(island);
-        MoveService move = new MoveService(island);
+        MoveService move = new MoveService(island,logger);
         GrowService grow = new GrowService(island);
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(() -> {
@@ -110,8 +115,9 @@ public class Simulator {
     }
 
     public void runSingleThread() throws InterruptedException {
+        EvanteLogger logger = new EvanteLogger(!(isTrack.equals("n")));
         EatService eat = new EatService(island);
-        MoveService move = new MoveService(island);
+        MoveService move = new MoveService(island,logger);
         GrowService grow = new GrowService(island);
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(() -> {
