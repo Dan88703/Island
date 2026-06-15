@@ -48,7 +48,7 @@ public class MoveService {
 
         Cage newCage = island.getCage(new Coordinate(x, y));
         if (newCage != cage) {
-            System.out.println(animal + " moved from "
+            track.log(animal.getAnimalsType().symbol + " moved from"
                     + cage.getCoordinate().getX() + "," + cage.getCoordinate().getY()
                     + " to " + newCage.getCoordinate().getX() + "," + newCage.getCoordinate().getY());
             cage.removeAnimal(animal);
