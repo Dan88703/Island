@@ -4,7 +4,7 @@ package org.example.islandManager;
 import org.example.AnimalFactory;
 import org.example.Cage;
 import org.example.Island;
-import org.example.population.AllAnimals.AnimalsType;
+import org.example.population.AnimalsType;
 import org.example.population.Plants;
 
 import java.util.ArrayList;

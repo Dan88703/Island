@@ -1,4 +1,4 @@
-package org.example.population.AllAnimals;
+package org.example.population;
 
 public enum AnimalsType {
     WOLF("Wolf", 2, 30),

@@ -2,7 +2,6 @@ package org.example.population;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.example.population.AllAnimals.AnimalsType;
 
 import java.util.UUID;
 

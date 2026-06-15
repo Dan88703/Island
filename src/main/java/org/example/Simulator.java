@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.islandManager.IslandInit;
-import org.example.population.AllAnimals.*;
+import org.example.population.AnimalsType;
 import org.example.revitalizationOfLife.EatService;
 import org.example.revitalizationOfLife.GrowService;
 import org.example.revitalizationOfLife.MoveService;

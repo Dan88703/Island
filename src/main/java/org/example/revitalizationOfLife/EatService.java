@@ -2,15 +2,13 @@ package org.example.revitalizationOfLife;
 
 import org.example.Cage;
 import org.example.Island;
-import org.example.population.AllAnimals.*;
 import org.example.population.Animals;
+import org.example.population.AnimalsType;
 import org.example.population.Plants;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class EatService {
     private final Island island;
