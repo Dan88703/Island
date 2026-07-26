@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-class Parameters {
+public class Parameters {
     private boolean isMultithreaded;
     private int x;
     private int y;
