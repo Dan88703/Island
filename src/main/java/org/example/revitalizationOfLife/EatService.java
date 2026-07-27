@@ -6,9 +6,7 @@ import org.example.population.Animals;
 import org.example.population.AnimalsType;
 import org.example.population.Plants;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class EatService {
     private final Island island;
@@ -25,45 +23,38 @@ public class EatService {
     }
 
 
+    private static final Map<AnimalsType, Map<AnimalsType, Double>> PREY_KEY = Map.of(
+            AnimalsType.WOLF, Map.of(
+                    AnimalsType.RABBIT, 0.25,
+                    AnimalsType.DUCK, 0.25
+            ),
+            AnimalsType.BEAR, Map.of(
+                    AnimalsType.RABBIT, 0.70,
+                    AnimalsType.WOLF, 0.70,
+                    AnimalsType.BOAR, 0.70,
+                    AnimalsType.MOUSE, 0.70,
+                    AnimalsType.DUCK, 0.70,
+                    AnimalsType.ELK, 0.70
+            )
+    );
+
+
     public void eat(Animals animal, Cage cage) {
-        if (animal.getAnimalsType() == AnimalsType.WOLF) {
-            eatAsWolf(cage);
-        } else if (animal.getAnimalsType() == AnimalsType.BEAR) {
-            eatAsBear(cage);
-        } else if (animal.getAnimalsType() == AnimalsType.RABBIT) {
-            eatPlants(cage, 0.25);
-        } else if (animal.getAnimalsType() == AnimalsType.BOAR) {
-            eatPlants(cage, 0.50);
-        } else if (animal.getAnimalsType() == AnimalsType.MOUSE) {
-            eatPlants(cage, 0.10);
-        } else if (animal.getAnimalsType() == AnimalsType.DUCK) {
-            eatPlants(cage, 0.20);
-        } else if (animal.getAnimalsType() == AnimalsType.ELK) {
-            eatPlants(cage, 0.90);
-        }
-    }
+        AnimalsType predator = animal.getAnimalsType();
 
-    private void eatAsWolf(Cage cage) {
-        List<Animals> prey = cage.getAnimals()
-                .stream()
-                .filter(a -> a.getAnimalsType() == AnimalsType.RABBIT
-                        || a.getAnimalsType() == AnimalsType.DUCK)
-                .toList();
-        if (!prey.isEmpty() && Math.random() < 0.25
-        ) {
-            Animals victim = prey.get(new Random().nextInt(prey.size()));
-            cage.getAnimals().remove(victim);
-        }
-    }
-
-    private void eatAsBear(Cage cage) {
-        List<Animals> prey = cage.getAnimals()
-                .stream()
-                .filter(a -> a.getAnimalsType() != AnimalsType.BEAR)
-                .toList();
-        if (!prey.isEmpty() && Math.random() < 0.7) {
-            Animals victim = prey.get(new Random().nextInt(prey.size()));
-            cage.getAnimals().remove(victim);
+        if (PREY_KEY.containsKey(predator)) {
+            Map<AnimalsType, Double> animalsTypes = PREY_KEY.get(predator);
+            cage.getAnimals().stream()
+                    .filter(a -> animalsTypes.containsKey(a.getAnimalsType()))
+                    .findFirst()
+                    .ifPresent(victim -> {
+                        double predatorValue = animalsTypes.get(victim.getAnimalsType());
+                        if (Math.random() < predatorValue) {
+                            cage.removeAnimal(victim);
+                        }
+                    });
+        } else {
+            eatPlants(cage, PLANTS_KEY.get(predator));
         }
     }
 
@@ -73,4 +64,12 @@ public class EatService {
             cage.getPlants().remove(plant);
         }
     }
+
+    private static final Map<AnimalsType, Double> PLANTS_KEY = Map.of(
+            AnimalsType.RABBIT, 0.25,
+            AnimalsType.BOAR, 0.50,
+            AnimalsType.MOUSE, 0.10,
+            AnimalsType.DUCK, 0.20,
+            AnimalsType.ELK, 0.90
+    );
 }

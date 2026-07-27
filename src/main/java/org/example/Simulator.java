@@ -18,6 +18,10 @@ public class Simulator {
     private final Island island;
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
+    private EatService eat;
+    private MoveService move;
+    private GrowService grow;
+
     public Simulator(Parameters params) {
         this.params = params;
         this.island = new IslandInit(params,executor).init();
@@ -71,9 +75,7 @@ public class Simulator {
     }
 
 
-    private EatService eat;
-    private MoveService move;
-    private GrowService grow;
+
 
     private void initServices() {
         EvanteLogger logger = new EvanteLogger(params.isLoggingEnabled());
