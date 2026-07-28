@@ -31,7 +31,7 @@ public class Island {
     }
 
     public boolean isAvailable(int x, int y) {
-        return x >= 0 && y >= 0 && x < 5 && y < 5;
+        return x >= 0 && y >= 0 && x < sizeX && y < sizeY;
     }
 
 }

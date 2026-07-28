@@ -91,7 +91,7 @@ public class Simulator {
         while (true) {
             List<Future<?>> futures = new ArrayList<>();
             futures.add(executor.submit(eat::process));
-            futures.add(executor.submit(move::procces));
+            futures.add(executor.submit(move::process));
             for (Future<?> f : futures) {
                 try {
                     f.get();
@@ -107,7 +107,7 @@ public class Simulator {
         initServices();
         while (true) {
             eat.process();
-            move.procces();
+            move.process();
             Thread.sleep(2000);
         }
     }
