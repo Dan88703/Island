@@ -52,6 +52,7 @@ public class IslandInit {
             }
         }
     }
+
     private void fillSingleThread(Island island) {
         for (Cage cage : island.getCages()) {
             IslandObjectFactory.population(cage);

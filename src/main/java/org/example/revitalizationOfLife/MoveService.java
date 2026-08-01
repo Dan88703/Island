@@ -22,11 +22,11 @@ public class MoveService {
 
     private List<Direction> getAvailableDirections(int x, int y) {
         List<Direction> directions = new ArrayList<>();
-       for (Direction direction : Direction.values()) {
-           if (island.isAvailable(x + direction.dx, y + direction.dy)) {
-               directions.add(direction);
-           }
-       }
+        for (Direction direction : Direction.values()) {
+            if (island.isAvailable(x + direction.dx, y + direction.dy)) {
+                directions.add(direction);
+            }
+        }
         return directions;
     }
 
@@ -43,8 +43,8 @@ public class MoveService {
         List<Direction> currentDirections = getAvailableDirections(curentX, curentY);
         Direction direction = currentDirections.get(new Random().nextInt(currentDirections.size()));
         for (int i = 0; i < animal.getAnimalsType().speed; i++) {
-            int newX = curentX +  direction.dx;
-            int newY = curentY  +  direction.dy;
+            int newX = curentX + direction.dx;
+            int newY = curentY + direction.dy;
             if (island.isAvailable(newX, newY)) {
                 curentX = newX;
                 curentY = newY;

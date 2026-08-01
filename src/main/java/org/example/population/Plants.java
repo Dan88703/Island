@@ -14,7 +14,6 @@ public class Plants {
     private double amount;
 
 
-
     public void grow(int amount) {
         this.amount += amount;
     }

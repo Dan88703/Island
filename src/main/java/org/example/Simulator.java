@@ -1,17 +1,18 @@
 package org.example;
 
 import org.example.islandManager.IslandInit;
+import org.example.islandManager.Parameters;
 import org.example.population.AnimalsType;
 import org.example.revitalizationOfLife.EatService;
 import org.example.revitalizationOfLife.GrowService;
 import org.example.revitalizationOfLife.MoveService;
-import org.example.islandManager.Parameters;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.*;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class Simulator {
     private final Parameters params;
@@ -24,7 +25,7 @@ public class Simulator {
 
     public Simulator(Parameters params) {
         this.params = params;
-        this.island = new IslandInit(params,executor).init();
+        this.island = new IslandInit(params, executor).init();
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -59,13 +60,26 @@ public class Simulator {
 
     public void statistics() {
         System.out.println("=== Statistic ===");
+        HashMap<String, Long> animalsStatistics = new HashMap<>();
         for (AnimalsType animalsType : AnimalsType.values()) {
             long count = island.getCages().stream()
                     .flatMap(cage -> cage.getAnimals().stream()
                             .filter(animals -> animals.getAnimalsType() == animalsType))
                     .count();
-            System.out.println("Animal:" + animalsType.symbol + " " + count);
+            animalsStatistics.put(animalsType.symbol, count);
+//            System.out.println("Animal:" + animalsType.symbol + " " + count);
         }
+        animalsStatistics.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ))
+                .forEach((animal, count) -> System.out.println(animal + " " + count));
+
+
         long plants = island.getCages().stream()
                 .mapToLong(cage -> cage.getPlants().size())
                 .sum();
@@ -73,8 +87,6 @@ public class Simulator {
         System.out.println("Plants:" + plants);
 
     }
-
-
 
 
     private void initServices() {

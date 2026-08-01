@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.Cage;
 import org.example.Island;
-import org.example.Cage;
 import org.example.population.Plants;
 
 import java.util.Random;
@@ -24,17 +23,18 @@ public class GrowService {
     }
 
     public void start() {
-        scheduler.scheduleAtFixedRate(this::grow,40,40, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(this::grow, 40, 40, TimeUnit.SECONDS);
     }
 
     public void grow() {
-        Random  random = new Random();
-        for(Cage cage : island.getCages()){
+        Random random = new Random();
+        for (Cage cage : island.getCages()) {
             int growAmount = random.nextInt(5) + 3;
-           for (int i=0; i<growAmount; i++){
+            for (int i = 0; i < growAmount; i++) {
                 cage.addPlant(new Plants(10.0));
-           }
-        };
+            }
+        }
+        ;
     }
 
 }

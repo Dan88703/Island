@@ -8,11 +8,12 @@ public class IslandObjectFactory {
     public static Animals createAnimals(AnimalsType animalsType) {
         return new Animals(animalsType);
     }
+
     public static Plants createPlants(double amount) {
         return new Plants(amount);
     }
 
-    public static void population (Cage cage){
+    public static void population(Cage cage) {
         Random rnd = new Random();
 
         for (AnimalsType type : AnimalsType.values()) {
